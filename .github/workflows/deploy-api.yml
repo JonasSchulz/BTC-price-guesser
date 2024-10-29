@@ -9,7 +9,7 @@ env:
   TF_CLOUD_ORGANIZATION: "jonas_d_schulz"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "btc-price-guesser"
-  CONFIG_DIRECTORY: "./api/infra/"
+  CONFIG_DIRECTORY: "./api/"
 
 jobs:
   terraform:
