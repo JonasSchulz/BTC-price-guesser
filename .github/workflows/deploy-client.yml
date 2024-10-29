@@ -48,6 +48,7 @@ jobs:
     defaults:
       run:
         working-directory: ./client
+    needs: terraform
     steps:
       # Clone the repo
       - name: Clone repository
