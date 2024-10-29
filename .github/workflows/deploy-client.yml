@@ -64,7 +64,7 @@ jobs:
 
       # Build the static site
       - name: Create static build
-        run: npm ci && npm build
+        run: npm ci && npm run build
 
       # Upload the artifact for other stages to use
       - name: Share artifact in github workflow
