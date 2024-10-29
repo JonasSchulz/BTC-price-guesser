@@ -45,21 +45,27 @@ jobs:
           plan: ${{ fromJSON(steps.plan-run.outputs.payload).data.relationships.plan.data.id }}
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
     steps:
       # Clone the repo
       - name: Clone repository
         uses: actions/checkout@v1
+
       # Cache node modules
       - name: Cache node modules
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: yarn-deps-${{ hashFiles('yarn.lock') }}
+          key: npm-deps-${{ hashFiles('package-lock.lock') }}
           restore-keys: |
-            yarn-deps-${{ hashFiles('yarn.lock') }}
+            npm-deps-${{ hashFiles('package-lock.lock') }}
+
       # Build the static site
       - name: Create static build
-        run: yarn install && yarn build
+        run: npm ci && npm build
+
       # Upload the artifact for other stages to use
       - name: Share artifact in github workflow
         uses: actions/upload-artifact@v4
