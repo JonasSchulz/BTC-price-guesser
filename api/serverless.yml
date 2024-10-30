@@ -1,0 +1,37 @@
+service: btc-price--guesser
+
+plugins:
+  - serverless-esbuild # used for compiling/packaging the Typescript code
+  - serverless-offline # used for local execution
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-central-1
+  stage: ${opt:stage}
+  timeout: 30 # repository wide Lambda timeout
+  environment: # repository wide Lambda env variables
+    STAGE: ${self:provider.stage}
+
+custom:
+  customVariable1: Hello, World!
+
+functions:
+  # Serverless Framework specific syntax
+  Function1:
+    handler: ./src/lambda1.handler
+    events:
+      - httpApi:
+          path: /api/Function1
+          method: GET
+    environment:
+      CUSTOM_VAR: ${self:custom.customVariable1}
+
+  Function2:
+    handler: ./src/lambda2.handler
+    timeout: 10 # override global setting
+    memorySize: 2048 # override default 512 Mb
+    events:
+      - schedule:
+          rate: cron(0 12 * * ? *) # triggers every 12 hours
+          enabled: true
