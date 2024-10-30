@@ -1,4 +1,4 @@
-service: serverless-typescript-template
+service: btc-price--guesser
 
 plugins:
   - serverless-esbuild # used for compiling/packaging the Typescript code
