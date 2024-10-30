@@ -18,6 +18,9 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
     strategy:
       matrix:
         node-version: [20.x]
