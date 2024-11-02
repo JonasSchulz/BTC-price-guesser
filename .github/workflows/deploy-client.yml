@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - try-amplify
     paths:
       - client/**
       - .github/workflows/deploy-client.yml
@@ -46,36 +47,3 @@ jobs:
         with:
           run: ${{ steps.apply-run.outputs.run_id }}
           comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./client
-    needs: terraform
-    steps:
-      # Clone the repo
-      - name: Clone repository
-        uses: actions/checkout@v1
-
-      # Cache node modules
-      - name: Cache node modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: npm-deps-${{ hashFiles('package-lock.lock') }}
-          restore-keys: |
-            npm-deps-${{ hashFiles('package-lock.lock') }}
-
-      # Build the static site
-      - name: Create static build
-        run: npm ci && npm run build
-
-      # Upload the build to s3
-      - uses: shallwefootball/s3-upload-action@master
-        name: Upload S3
-        id: S3
-        with:
-          aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-          aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: './client/build'
