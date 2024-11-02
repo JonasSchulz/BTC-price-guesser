@@ -17,7 +17,7 @@ export const handler: Handler = async (
       TableName: TABLE_NAME,
       Item: {
         user_name: "some-test-user",
-        inserted_at: Date.now(),
+        inserted_at: Date.now().toString(),
       },
     })
   );
