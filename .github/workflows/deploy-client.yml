@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - api/**
+      - client/**
+      - .github/workflows/deploy-client.yml
 
 env:
   TF_CLOUD_ORGANIZATION: "jonas_d_schulz"
