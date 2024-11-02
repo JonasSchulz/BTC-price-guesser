@@ -11,7 +11,7 @@ provider:
   stage: ${opt:stage}
   timeout: 30 # repository wide Lambda timeout
   logs:
-    restApi: true
+    httpApi: true
   environment: # repository wide Lambda env variables
     STAGE: ${self:provider.stage}
 
