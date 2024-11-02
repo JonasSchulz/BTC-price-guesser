@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - try-amplify
     paths:
       - client/**
       - .github/workflows/deploy-client.yml
