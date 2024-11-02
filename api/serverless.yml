@@ -30,7 +30,7 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         Fn::GetAtt:
-          - MyDynamoTable
+          - GuessesTable
           - Arn
 
 functions:
