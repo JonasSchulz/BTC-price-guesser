@@ -1,30 +1,9 @@
-resource "aws_iam_role" "amplify_service_role" {
-  name = "AmplifyServiceRole-AmplifyRole"
-
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "Service": "amplify.amazonaws.com"
-            },
-            "Action": "sts:AssumeRole"
-        }
-    ]
-}
-EOF
-    managed_policy_arns = ["arn:aws:iam::aws:policy/AdministratorAccess-Amplify"]
-}
-
 resource "aws_amplify_app" "btc_price_guesser_client" {
   name       = var.app_name
   repository = var.repository #This will be your reactjs project
 
   access_token             = var.github_token
   enable_branch_auto_build = true
-  iam_service_role_arn = aws_iam_role.amplify_service_role.arn
 
   # The default build_spec added by the Amplify Console for React.
   build_spec = <<-EOT
