@@ -1,21 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react"
+import "./App.css"
+import { LoginForm } from "./components/loginForm"
 
-function App() {
+const App = () => {
+  const [username, setUsername] = useState("")
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hello! Current BTC price is:
-        </p>
-        <p>
-          Wanna guess where it is going?
-        </p>
-      </header>
+    <div className="flex items-center justify-center h-screen text-3xl font-bold underline bg-teal-700">
+      {username ? (
+        <div> {'Hey ' + username}</div>
+      ) : (
+        <LoginForm setLoginData={setUsername}/>
+      )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
