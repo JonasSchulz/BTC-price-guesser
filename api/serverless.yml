@@ -16,6 +16,22 @@ provider:
     cors: true
   environment: # repository wide Lambda env variables
     STAGE: ${self:provider.stage}
+    TABLE_NAME:
+      Ref: GuessesTable
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "Fn::GetAtt": [GuessesTable, Arn]
 
 functions:
   # Serverless Framework specific syntax
@@ -28,11 +44,29 @@ functions:
     environment:
       CMC_API_KEY: ${env:CMC_API_KEY}
 
-  Function2:
-    handler: ./src/lambda2.handler
-    timeout: 10 # override global setting
-    memorySize: 2048 # override default 512 Mb
+  CreateGuess:
+    handler: ./src/createGuess.handler
     events:
-      - schedule:
-          rate: cron(0 12 * * ? *) # triggers every 12 hours
-          enabled: true
+      - httpApi:
+        path: /guesses
+        method: POST
+
+resources:
+  Resources:
+    GuessesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: GuessesTable
+        AttributeDefinitions:
+          - AttributeName: user_name
+            AttributeType: S
+          - AttributeName: id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: user_name
+            KeyType: HASH
+          - AttributeName: id
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
