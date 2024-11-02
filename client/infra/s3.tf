@@ -48,7 +48,7 @@ resource "aws_s3_bucket_policy" "allow_file_upload" {
       {
         Sid       = "PublicReadGetObject"
         Principal = {
-          AWS = "${aws_iam_user.terraform_iam_user.name}"
+          AWS = "${data.aws_iam_user.terraform_iam_user.name}"
         }
         Action = [
           "s3:*",
