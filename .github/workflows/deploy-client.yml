@@ -1,4 +1,4 @@
-name: "Client - Terraform Plan"
+name: "Client - Deploy"
 
 on:
   push:
@@ -16,7 +16,7 @@ env:
 
 jobs:
   terraform:
-    name: "Terraform Plan"
+    name: "Terraform Deploy"
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,25 +27,26 @@ jobs:
 
       - name: Upload Configuration
         uses: hashicorp/tfc-workflows-github/actions/upload-configuration@v1.0.0
-        id: plan-upload
+        id: apply-upload
         with:
           workspace: ${{ env.TF_WORKSPACE }}
           directory: ${{ env.CONFIG_DIRECTORY }}
           speculative: true
 
-      - name: Create Plan Run
+      - name: Create Apply Run
         uses: hashicorp/tfc-workflows-github/actions/create-run@v1.0.0
-        id: plan-run
+        id: apply-run
         with:
           workspace: ${{ env.TF_WORKSPACE }}
-          configuration_version: ${{ steps.plan-upload.outputs.configuration_version_id }}
-          plan_only: true
+          configuration_version: ${{ steps.apply-upload.outputs.configuration_version_id }}
 
-      - name: Get Plan Output
-        uses: hashicorp/tfc-workflows-github/actions/plan-output@v1.0.0
-        id: plan-output
+      - name: Apply
+        uses: hashicorp/tfc-workflows-github/actions/apply-run@v1.0.0
+        if: fromJSON(steps.apply-run.outputs.payload).data.attributes.actions.IsConfirmable
+        id: apply
         with:
-          plan: ${{ fromJSON(steps.plan-run.outputs.payload).data.relationships.plan.data.id }}
+          run: ${{ steps.apply-run.outputs.run_id }}
+          comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
   build-and-deploy:
     runs-on: ubuntu-latest
     defaults:
