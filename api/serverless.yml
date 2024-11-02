@@ -48,8 +48,8 @@ functions:
     handler: ./src/createGuess.handler
     events:
       - httpApi:
-        path: /guesses
-        method: POST
+          path: /guesses
+          method: POST
 
 resources:
   Resources:
