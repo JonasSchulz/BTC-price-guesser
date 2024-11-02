@@ -45,7 +45,7 @@ jobs:
         id: plan-output
         with:
           plan: ${{ fromJSON(steps.plan-run.outputs.payload).data.relationships.plan.data.id }}
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -69,9 +69,12 @@ jobs:
       - name: Create static build
         run: npm ci && npm run build
 
-      # Upload the artifact for other stages to use
-      - name: Share artifact in github workflow
-        uses: actions/upload-artifact@v4
+      # Upload the build to s3
+      - uses: shallwefootball/s3-upload-action@master
+        name: Upload S3
+        id: S3
         with:
-          name: build
-          path: build
+          aws_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_bucket: ${{ secrets.AWS_BUCKET }}
+          source_dir: 'build'
