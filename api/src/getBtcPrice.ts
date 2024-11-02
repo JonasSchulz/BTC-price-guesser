@@ -40,6 +40,6 @@ export const handler: Handler = async (
 
   return {
     statusCode: 200,
-    body: priceData,
+    body: JSON.stringify(priceData),
   }
 }

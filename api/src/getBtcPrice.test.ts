@@ -14,8 +14,10 @@ describe("getBtcPrice handler", () => {
 
     const response = await handler(testEvent, testContext, testCallback)
 
+    const responseBody = JSON.parse(response.body)
+
     assert.strictEqual(response.statusCode, 200)
-    assert.strictEqual(response.body.currency, "EUR")
-    assert.strictEqual(typeof response.body.currentPrice, "number")
+    assert.strictEqual(responseBody.currency, "EUR")
+    assert.strictEqual(typeof responseBody.currentPrice, "number")
   })
 })
