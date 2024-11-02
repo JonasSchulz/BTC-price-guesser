@@ -13,19 +13,16 @@ provider:
   environment: # repository wide Lambda env variables
     STAGE: ${self:provider.stage}
 
-custom:
-  customVariable1: Hello, World!
-
 functions:
   # Serverless Framework specific syntax
-  Function1:
-    handler: ./src/lambda1.handler
+  GetBtcPrice:
+    handler: ./src/getBtcPrice.handler
     events:
       - httpApi:
-          path: /api/Function1
+          path: /btc/price
           method: GET
     environment:
-      CUSTOM_VAR: ${self:custom.customVariable1}
+      CMC_API_KEY: ${env:CMC_API_KEY}
 
   Function2:
     handler: ./src/lambda2.handler
