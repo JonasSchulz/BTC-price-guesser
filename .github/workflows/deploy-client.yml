@@ -6,7 +6,7 @@ on:
       - main
       - try-amplify
     paths:
-      - client/**
+      - client/infra/**
       - .github/workflows/deploy-client.yml
 
 env:
