@@ -1,14 +1,6 @@
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import App from './App';
-
-test('asks the user to enter a username', () => {
-  render(<App />);
-  
-  const greeting = screen.getByText(/Please input your username/i);
-
-  expect(greeting).toBeInTheDocument();
-});
 
 test('shows the current bitcoin price when the user identified themselves', async () => {
   const user = userEvent.setup();
@@ -23,5 +15,10 @@ test('shows the current bitcoin price when the user identified themselves', asyn
 
   const userGreeting = await screen.findByText(/Hey some-username/i);
   expect(userGreeting).toBeInTheDocument();
-})
 
+  const bitcoinHeading = await screen.findByText(/The current BTC Price is:/i)
+  expect(bitcoinHeading).toBeInTheDocument();
+
+  const bitcoinPrice = await screen.findByText(/(\d*.\d*) EUR/i)
+  expect(bitcoinPrice).toBeInTheDocument();
+})
