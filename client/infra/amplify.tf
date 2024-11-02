@@ -15,6 +15,7 @@ resource "aws_iam_role" "amplify_service_role" {
     ]
 }
 EOF
+    managed_policy_arns = ["arn:aws:iam::aws:policy/AdministratorAccess-Amplify"]
 }
 
 resource "aws_amplify_app" "btc_price_guesser_client" {
