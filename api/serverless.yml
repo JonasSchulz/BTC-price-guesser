@@ -16,22 +16,22 @@ provider:
     cors: true
   environment: # repository wide Lambda env variables
     STAGE: ${self:provider.stage}
-    # TABLE_NAME:
-    #   Ref: GuessesTable
-  # iamRoleStatements:
-  #   - Effect: Allow
-  #     Action:
-  #       - dynamodb:DescribeTable
-  #       - dynamodb:Query
-  #       - dynamodb:Scan
-  #       - dynamodb:GetItem
-  #       - dynamodb:PutItem
-  #       - dynamodb:UpdateItem
-  #       - dynamodb:DeleteItem
-  #     Resource:
-  #       Fn::GetAtt:
-  #         - GuessesTable
-  #         - Arn
+    TABLE_NAME:
+      Ref: GuessesTable
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        Fn::GetAtt:
+          - GuessesTable
+          - Arn
 
 functions:
   # Serverless Framework specific syntax
@@ -51,22 +51,22 @@ functions:
           path: /guesses
           method: POST
 
-# resources:
-#   Resources:
-#     GuessesTable:
-#       Type: AWS::DynamoDB::Table
-#       Properties:
-#         TableName: GuessesTable
-#         AttributeDefinitions:
-#           - AttributeName: user_name
-#             AttributeType: S
-#           - AttributeName: inserted_at
-#             AttributeType: S
-#         KeySchema:
-#           - AttributeName: user_name
-#             KeyType: HASH
-#           - AttributeName: inserted_at
-#             KeyType: RANGE
-#         ProvisionedThroughput:
-#           ReadCapacityUnits: 1
-#           WriteCapacityUnits: 1
+resources:
+  Resources:
+    GuessesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: GuessesTable
+        AttributeDefinitions:
+          - AttributeName: user_name
+            AttributeType: S
+          - AttributeName: inserted_at
+            AttributeType: S
+        KeySchema:
+          - AttributeName: user_name
+            KeyType: HASH
+          - AttributeName: inserted_at
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
