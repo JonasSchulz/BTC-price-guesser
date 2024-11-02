@@ -60,12 +60,12 @@ resources:
         AttributeDefinitions:
           - AttributeName: user_name
             AttributeType: S
-          - AttributeName: id
-            AttributeType: N
+          - AttributeName: inserted_at
+            AttributeType: S
         KeySchema:
           - AttributeName: user_name
             KeyType: HASH
-          - AttributeName: id
+          - AttributeName: inserted_at
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
