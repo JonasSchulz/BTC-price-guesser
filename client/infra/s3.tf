@@ -36,7 +36,7 @@ resource "aws_s3_bucket_policy" "static_site_bucket_policy" {
 }
 
 data "aws_iam_user" "terraform_iam_user" {
-  name = "btc-price-guesser-tf"
+  user_name = "btc-price-guesser-tf"
 }
 
 resource "aws_s3_bucket_policy" "allow_file_upload" {
