@@ -12,6 +12,7 @@ provider:
   timeout: 30 # repository wide Lambda timeout
   logs:
     httpApi: true
+  httpApi:
     cors: true
   environment: # repository wide Lambda env variables
     STAGE: ${self:provider.stage}
