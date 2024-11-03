@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Guess, ResultScores } from "../model/guess"
 import { API_URL } from "../constants"
 
 type GuessListProps = {
   username: string
   newGuess: Guess | undefined
+  pastGuesses: Array<Guess>
+  setPastGuesses: (pastGuesses: Array<Guess>) => void
 }
 
 const buildResultString = (result: ResultScores | null) => {
@@ -21,9 +23,7 @@ const buildResultString = (result: ResultScores | null) => {
 }
 
 export const GuessList = (props: GuessListProps) => {
-  const { newGuess, username } = props
-
-  const [pastGuesses, setPastGuesses] = useState<Array<Guess>>([])
+  const { newGuess, username, pastGuesses, setPastGuesses } = props
 
   useEffect(() => {
     const fetchPastGuesses = async () => {
@@ -38,19 +38,17 @@ export const GuessList = (props: GuessListProps) => {
     }
 
     fetchPastGuesses()
-  }, [newGuess, username])
+  }, [newGuess, username, setPastGuesses])
 
   return (
     <div className="m-4">
-      <p className="text-center underline font-bold mb-2">Past guesses</p>
+      <p className="text-center underline font-bold mb-2">Your guesses</p>
       <ul className="flex flex-col">
         {pastGuesses.map((pastGuess) => {
           const result = buildResultString(pastGuess.result)
 
           return (
-            <li className="space-y-1 list-disc list-inside p-1">
-              {`You guessed: ${pastGuess.guess} - ${result}`}
-            </li>
+            <li className="space-y-1 list-disc list-inside p-1">{`You guessed: ${pastGuess.guess} - ${result}`}</li>
           )
         })}
       </ul>

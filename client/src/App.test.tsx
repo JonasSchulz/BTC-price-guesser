@@ -55,7 +55,7 @@ test("allows the user to guess if the price is going to go up", async () => {
 
   await login(user)
 
-  const increaseButton = await screen.findByText(/increase/i)
+  const increaseButton = await screen.findByText(/^increase$/i)
   await user.click(increaseButton)
 
   const newGuess = await screen.findByText(/You guessed: increase - waiting for result/i)
@@ -89,7 +89,7 @@ test("allows the user to guess if the price is going to go down", async () => {
 
   await login(user)
 
-  const decreaseButton = await screen.findByText(/decrease/i)
+  const decreaseButton = await screen.findByText(/^decrease$/i)
   await user.click(decreaseButton)
 
   const newGuess = await screen.findByText(/You guessed: decrease - waiting for result/i)
@@ -138,4 +138,70 @@ test("shows the users past guesses", async () => {
   expect(fetchMock.mock.calls.length).toEqual(2)
   expect(fetchMock.mock.calls[0][0]).toEqual(`${API_URL}/btc/price`)
   expect(fetchMock.mock.calls[1][0]).toEqual(`${API_URL}/guesses?user_name=some-username`)
+})
+
+test("shows the user their current score", async () => {
+  const pastGuessesMock = JSON.stringify([
+    {
+      user_name: "some-username",
+      inserted_at: Date.now().toString(),
+      guess: GuessTypes.increase,
+      result: -1,
+    },
+    {
+      user_name: "some-username",
+      inserted_at: Date.now().toString(),
+      guess: GuessTypes.decrease,
+      result: 1,
+    },
+    {
+      user_name: "some-username",
+      inserted_at: Date.now().toString(),
+      guess: GuessTypes.decrease,
+      result: 1,
+    },
+    {
+      user_name: "some-username",
+      inserted_at: Date.now().toString(),
+      guess: GuessTypes.decrease,
+      result: 1,
+    },
+  ])
+  fetchMock.mockResponses(fetchCurrentBtcPriceMock, pastGuessesMock)
+  const user = userEvent.setup()
+
+  render(<App />)
+
+  await login(user)
+
+  const currentScore = await screen.findByText(/Your score: 2/i)
+  expect(currentScore).toBeInTheDocument()
+})
+
+test("does not allow the user to guess if they have a pending result", async () => {
+  const pastGuessesMock = JSON.stringify([
+    {
+      user_name: "some-username",
+      inserted_at: Date.now().toString(),
+      guess: GuessTypes.increase,
+      result: null,
+    },
+  ])
+  fetchMock.mockResponses(fetchCurrentBtcPriceMock, pastGuessesMock)
+  const user = userEvent.setup()
+
+  render(<App />)
+
+  await login(user)
+
+  const guessIncreaseButton = screen.queryByText(/^increase$/i)
+  expect(guessIncreaseButton).toBeNull()
+
+  const guessDecreaseButton = screen.queryByText(/^decrease$/i)
+  expect(guessDecreaseButton).toBeNull()
+
+  const unableToGuessMessage = await screen.findByText(
+    /You have a pending guess\. It needs to be resolved before you can guess again\./i,
+  )
+  expect(unableToGuessMessage).toBeInTheDocument()
 })

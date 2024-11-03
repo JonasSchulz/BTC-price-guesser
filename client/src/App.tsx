@@ -6,10 +6,12 @@ import { GuessForm } from "./components/guessForm"
 import { GuessList } from "./components/guessList"
 import { Guess } from "./model/guess"
 import logo from "./assets/logo.png"
+import { Score } from "./components/score"
 
 const App = () => {
   const [username, setUsername] = useState("")
   const [newGuess, setNewGuess] = useState<Guess>()
+  const [pastGuesses, setPastGuesses] = useState<Array<Guess>>([])
 
   return (
     <div className="flex items-center justify-center h-screen text-3xl bg-teal-700">
@@ -20,8 +22,14 @@ const App = () => {
             <img className="size-60" src={logo} alt="Logo" />
           </div>
           <CurrentBtcPrice />
-          <GuessForm username={username} setNewGuess={setNewGuess} />
-          <GuessList username={username} newGuess={newGuess} />
+          <GuessForm username={username} setNewGuess={setNewGuess} pastGuesses={pastGuesses} />
+          <Score pastGuesses={pastGuesses} />
+          <GuessList
+            username={username}
+            newGuess={newGuess}
+            pastGuesses={pastGuesses}
+            setPastGuesses={setPastGuesses}
+          />
         </div>
       ) : (
         <LoginForm setLoginData={setUsername} />
