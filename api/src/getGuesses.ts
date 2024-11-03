@@ -15,16 +15,11 @@ export const handler: Handler = async (
 ): Promise<APIGatewayProxyStructuredResultV2> => {
   const username = (event.queryStringParameters as GetGuessesParams).user_name
 
-  // if (!username)
-  //   return {
-  //     statusCode: 400,
-  //     body: "No username found",
-  //   }
-
-  // return {
-  //   statusCode: 200,
-  //   body: "No username found",
-  // }
+  if (!username)
+    return {
+      statusCode: 400,
+      body: "No username found",
+    }
 
   const command = new QueryCommand({
     TableName: "GuessesTable",
@@ -35,9 +30,9 @@ export const handler: Handler = async (
   })
 
   const response = await docClient.send(command)
-  console.log(response)
+
   return {
     statusCode: 200,
-    body: "response",
+    body: JSON.stringify(response.Items),
   }
 }
