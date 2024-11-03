@@ -10,6 +10,7 @@
     "@serverless/typescript": "^3.30.1",
     "@types/aws-lambda": "^8.10.119",
     "@types/node": "^18.19.63",
+    "aws-sdk-client-mock": "^2.2.0",
     "esbuild": "^0.17.19",
     "glob": "^10.3.3",
     "serverless": "^3.34.0",

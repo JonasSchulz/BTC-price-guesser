@@ -24,21 +24,30 @@ export const handler: Handler = async (
   } else {
     const requestBody: CreateGuessBody = JSON.parse(event.body)
 
+    const inserted_at = Date.now().toString()
+
     await dynamo.send(
       new PutCommand({
         TableName: TABLE_NAME,
         Item: {
           user_name: requestBody.user_name,
-          inserted_at: Date.now().toString(),
+          inserted_at: inserted_at,
           guess: requestBody.guess,
-          result: null
+          result: null,
         },
       }),
     )
 
+    const response_body = {
+      user_name: requestBody.user_name,
+      inserted_at: inserted_at,
+      guess: requestBody.guess,
+      result: null,
+    }
+
     return {
       statusCode: 200,
-      body: "success",
+      body: JSON.stringify(response_body),
     }
   }
 }

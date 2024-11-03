@@ -64,7 +64,12 @@ test("allows the user to guess if the price is going to go up", async () => {
 test("allows the user to guess if the price is going to go down", async () => {
   fetchMock.mockResponses(
     JSON.stringify({ currentPrice: 0.1234, currency: "EUR" }),
-    JSON.stringify({ timeStamp: Date.now(), guess: GuessTypes.decrease, result: null }),
+    JSON.stringify({
+      user_name: "some-username",
+      inserted_at: Date.now().toString(),
+      guess: GuessTypes.decrease,
+      result: null,
+    }),
   )
 
   const user = userEvent.setup()
