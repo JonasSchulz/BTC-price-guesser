@@ -4,3 +4,4 @@
 # Future improvements
 
 - Add test/lint/format steps to pipeline
+- HTTP error handling
