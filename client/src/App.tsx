@@ -9,7 +9,7 @@ import logo from "./assets/logo.png"
 
 const App = () => {
   const [username, setUsername] = useState("")
-  const [pastGuesses, setPastGuesses] = useState<Array<Guess>>([])
+  const [newGuess, setNewGuess] = useState<Guess>()
 
   return (
     <div className="flex items-center justify-center h-screen text-3xl bg-teal-700">
@@ -20,8 +20,8 @@ const App = () => {
             <img className="size-60" src={logo} alt="Logo" />
           </div>
           <CurrentBtcPrice />
-          <GuessForm username={username} pastGuesses={pastGuesses} setPastGuesses={setPastGuesses} />
-          <GuessList pastGuesses={pastGuesses} />
+          <GuessForm username={username} setNewGuess={setNewGuess} />
+          <GuessList username={username} newGuess={newGuess} />
         </div>
       ) : (
         <LoginForm setLoginData={setUsername} />
