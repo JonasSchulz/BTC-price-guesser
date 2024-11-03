@@ -21,10 +21,10 @@ test("shows the current bitcoin price when the user identified themselves", asyn
   const submitButton = await screen.findByText(/Go/i)
   await user.click(submitButton)
 
-  const userGreeting = await screen.findByText(/Hey some-username/i)
+  const userGreeting = await screen.findByText(/Welcome some-username/i)
   expect(userGreeting).toBeInTheDocument()
 
-  const bitcoinHeading = await screen.findByText(/The current BTC Price is:/i)
+  const bitcoinHeading = await screen.findByText(/The current price for a Bitcoin is:/i)
   expect(bitcoinHeading).toBeInTheDocument()
 
   const bitcoinPrice = await screen.findByText(/(\d*.\d*) EUR/i)
@@ -50,7 +50,7 @@ test("allows the user to guess if the price is going to go up", async () => {
   const increaseButton = await screen.findByText(/increase/i)
   await user.click(increaseButton)
 
-  await screen.findByText(/Guess: increase - waiting for result/i)
+  await screen.findByText(/You guessed: increase - waiting for result/i)
 
   expect(fetchMock.mock.calls.length).toEqual(2)
   expect(fetchMock.mock.calls[0][0]).toEqual(`${API_URL}/btc/price`)
@@ -85,7 +85,7 @@ test("allows the user to guess if the price is going to go down", async () => {
   const decreaseButton = await screen.findByText(/decrease/i)
   await user.click(decreaseButton)
 
-  await screen.findByText(/Guess: decrease - waiting for result/i)
+  await screen.findByText(/You guessed: decrease - waiting for result/i)
 
   expect(fetchMock.mock.calls.length).toEqual(2)
   expect(fetchMock.mock.calls[0][0]).toEqual(`${API_URL}/btc/price`)

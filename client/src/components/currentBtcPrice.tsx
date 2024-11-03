@@ -13,12 +13,17 @@ export const CurrentBtcPrice = () => {
     const fetchBtcPrice = async () => {
       const response = await fetch(`${API_URL}/btc/price`)
       const json = (await response.json()) as CurrentBtcPriceResponse
-  
+
       setCurrentBtcPrice(`${json.currentPrice} ${json.currency}`)
     }
 
     fetchBtcPrice()
   }, [])
 
-  return <h1>{currentBtcPrice}</h1>
+  return (
+    <div className="m-4 flex flex-col text-3xl">
+      <p className="text-center"> The current price for a Bitcoin is:</p>
+      <p className="text-center">{currentBtcPrice}</p>
+    </div>
+  )
 }
