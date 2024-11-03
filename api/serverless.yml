@@ -51,7 +51,7 @@ functions:
           path: /guesses
           method: POST
 
-  GetGesses:
+  GetGuesses:
     handler: ./src/getGuesses.handler
     events:
       - httpApi:
