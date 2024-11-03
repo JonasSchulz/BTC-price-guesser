@@ -51,6 +51,14 @@ functions:
           path: /guesses
           method: POST
 
+  GetGesses:
+    handler: ./src/getGuesses.handler
+    events:
+      - httpApi:
+          path: /guesses
+          method: GET
+
+
 resources:
   Resources:
     GuessesTable:

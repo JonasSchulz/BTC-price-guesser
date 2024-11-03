@@ -6,8 +6,6 @@ import { handler } from "./createGuess"
 import { mockClient } from "aws-sdk-client-mock"
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb"
 
-process.env.CUSTOM_VAR = "test_value"
-
 const dynamoMock = mockClient(DynamoDBDocumentClient)
 
 beforeEach(() => {

@@ -20,23 +20,19 @@ export const handler: Handler = async (
   _event: APIGatewayProxyEventV2,
   _context: Context,
 ): Promise<APIGatewayProxyStructuredResultV2> => {
-  let priceData = undefined
-
-  await fetch(`${base_path}/v1/cryptocurrency/quotes/latest?slug=bitcoin&convert=EUR`, {
+  const response = await fetch(`${base_path}/v1/cryptocurrency/quotes/latest?slug=bitcoin&convert=EUR`, {
     method: "GET",
     headers: {
       "X-CMC_PRO_API_KEY": api_key,
     },
   })
-    .then((res) => {
-      return res.json()
-    })
-    .then((data) => {
-      priceData = {
-        currentPrice: (data as BtcMarketData).data.bitcoin.quote.EUR.price,
-        currency: "EUR"
-      }
-    })
+
+  const json = (await response.json()) as BtcMarketData
+
+  const priceData = {
+    currentPrice: json.data.bitcoin.quote.EUR.price,
+    currency: "EUR",
+  }
 
   return {
     statusCode: 200,
