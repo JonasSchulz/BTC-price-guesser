@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-
-const base_path = "https://9bd0qh6986.execute-api.eu-central-1.amazonaws.com"
+import { API_URL } from "../constants"
 
 type CurrentBtcPriceResponse = {
   currency: string
@@ -12,7 +11,7 @@ export const CurrentBtcPrice = () => {
 
   useEffect(() => {
     const fetchBtcPrice = async () => {
-      const response = await fetch(`${base_path}/btc/price`)
+      const response = await fetch(`${API_URL}/btc/price`)
       const json = (await response.json()) as CurrentBtcPriceResponse
   
       setCurrentBtcPrice(`${json.currentPrice} ${json.currency}`)

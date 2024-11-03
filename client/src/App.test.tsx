@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import App from "./App"
-import { timeStamp } from "console"
 import { GuessTypes } from "./model/guess"
+import { API_URL } from "./constants"
 
 beforeEach(() => {
   fetchMock.resetMocks()
@@ -51,6 +51,14 @@ test("allows the user to guess if the price is going to go up", async () => {
   await user.click(increaseButton)
 
   await screen.findByText(/Guess: increase - waiting for result/i)
+
+  expect(fetchMock.mock.calls.length).toEqual(2)
+  expect(fetchMock.mock.calls[0][0]).toEqual(`${API_URL}/btc/price`)
+  expect(fetchMock.mock.calls[1][0]).toEqual(`${API_URL}/guesses`)
+  expect(fetchMock.mock.calls[1][1]).toEqual({
+    body: '{"user_name":"some-username","guess":"increase"}',
+    method: "POST",
+  })
 })
 
 test("allows the user to guess if the price is going to go down", async () => {
@@ -73,4 +81,12 @@ test("allows the user to guess if the price is going to go down", async () => {
   await user.click(decreaseButton)
 
   await screen.findByText(/Guess: decrease - waiting for result/i)
+
+  expect(fetchMock.mock.calls.length).toEqual(2)
+  expect(fetchMock.mock.calls[0][0]).toEqual(`${API_URL}/btc/price`)
+  expect(fetchMock.mock.calls[1][0]).toEqual(`${API_URL}/guesses`)
+  expect(fetchMock.mock.calls[1][1]).toEqual({
+    body: '{"user_name":"some-username","guess":"decrease"}',
+    method: "POST",
+  })
 })

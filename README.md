@@ -5,3 +5,4 @@
 
 - Add test/lint/format steps to pipeline
 - HTTP error handling
+- Add e2e/integration tests

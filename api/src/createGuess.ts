@@ -31,6 +31,7 @@ export const handler: Handler = async (
           user_name: requestBody.user_name,
           inserted_at: Date.now().toString(),
           guess: requestBody.guess,
+          result: null
         },
       }),
     )

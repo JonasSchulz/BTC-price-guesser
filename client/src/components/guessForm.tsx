@@ -1,17 +1,20 @@
+import { API_URL } from "../constants"
 import { Guess, GuessTypes } from "../model/guess"
 
 type GuessFormProps = {
+  username: string
   pastGuesses: Array<Guess>
   setPastGuesses: (guesses: Array<Guess>) => void
 }
 
 export const GuessForm = (props: GuessFormProps) => {
-  const { pastGuesses, setPastGuesses } = props
+  const { username, pastGuesses, setPastGuesses } = props
 
   const makeGuess = async (guess: GuessTypes) => {
-    const response = await fetch("some-url", {
+    const response = await fetch(`${API_URL}/guesses`, {
       method: "POST",
       body: JSON.stringify({
+        user_name: username,
         guess: guess,
       }),
     })

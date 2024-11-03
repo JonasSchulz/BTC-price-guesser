@@ -17,7 +17,7 @@ const App = () => {
           <p>{"Hey " + username}</p>
           <p> The current BTC Price is:</p>
           <CurrentBtcPrice />
-          <GuessForm pastGuesses={pastGuesses} setPastGuesses={setPastGuesses} />
+          <GuessForm username={username} pastGuesses={pastGuesses} setPastGuesses={setPastGuesses} />
           <GuessList pastGuesses={pastGuesses} />
         </div>
       ) : (
