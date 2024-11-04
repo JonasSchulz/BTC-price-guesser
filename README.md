@@ -41,3 +41,4 @@ Some topics that could be next steps as improvements to the current project
 - Fix the act warning in the client unit tests
 - Add loading indicators to asynchronous operations on the UI. For example, loading the current BTC price
 - Add some form of global state for shared data accross frontend components. An example would be the username
+- Add caching so we are not querying the actual BTC price everytime the user refreshes the page
