@@ -4,7 +4,7 @@ import { beforeEach, describe, it } from "node:test"
 import { APIGatewayProxyEventV2, Callback, Context } from "aws-lambda"
 import { mockClient } from "aws-sdk-client-mock"
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb"
-import { handler } from "./resolveGueses"
+import { handler } from "./resolveGuesses"
 
 const dynamoMock = mockClient(DynamoDBDocumentClient)
 
