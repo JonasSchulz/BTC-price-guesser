@@ -42,6 +42,7 @@ functions:
           path: /btc/price
           method: GET
     environment:
+      CMC_URL: ${env:CMC_URL}
       CMC_API_KEY: ${env:CMC_API_KEY}
 
   CreateGuess:
