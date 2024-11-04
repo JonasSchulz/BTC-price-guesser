@@ -205,3 +205,19 @@ test("does not allow the user to guess if they have a pending result", async () 
   )
   expect(unableToGuessMessage).toBeInTheDocument()
 })
+
+test("allows the user to logout", async () => {
+  fetchMock.mockResponses(fetchCurrentBtcPriceMock, fetchEmptyPastGuessesMock)
+
+  const user = userEvent.setup()
+
+  render(<App />)
+
+  await login(user)
+
+  const logoutButton = await screen.findByText(/^logout$/i)
+  await user.click(logoutButton)
+
+  const usernameInput = await screen.findByText(/Please input your username/i)
+  expect(usernameInput).toBeInTheDocument()
+})
