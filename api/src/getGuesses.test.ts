@@ -3,7 +3,7 @@ import assert from "node:assert"
 import { beforeEach, describe, it } from "node:test"
 import { APIGatewayProxyEventV2, Callback, Context } from "aws-lambda"
 import { mockClient } from "aws-sdk-client-mock"
-import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb"
+import { DynamoDBDocumentClient, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb"
 import { handler } from "./getGuesses"
 
 const dynamoMock = mockClient(DynamoDBDocumentClient)
@@ -32,22 +32,18 @@ describe("getGuesses handler", () => {
     dynamoMock.on(QueryCommand).resolves({
       Items: [
         {
-          guess: "decrease",
+          user_name: "some-user",
           inserted_at: "1730662299137",
-          result: -1,
-          user_name: "Jonas",
+          guess: "decrease",
+          price: 0.1234,
+          score: -1,
         },
         {
-          guess: "increase",
+          user_name: "some-user",
           inserted_at: "1730662301474",
-          result: 1,
-          user_name: "Jonas",
-        },
-        {
           guess: "increase",
-          inserted_at: "1730663650707",
-          result: null,
-          user_name: "Jonas",
+          price: 0.4321,
+          score: 1,
         },
       ],
     })
@@ -68,22 +64,18 @@ describe("getGuesses handler", () => {
       response.body,
       JSON.stringify([
         {
-          guess: "decrease",
+          user_name: "some-user",
           inserted_at: "1730662299137",
-          result: -1,
-          user_name: "Jonas",
+          guess: "decrease",
+          price: 0.1234,
+          score: -1,
         },
         {
-          guess: "increase",
+          user_name: "some-user",
           inserted_at: "1730662301474",
-          result: 1,
-          user_name: "Jonas",
-        },
-        {
           guess: "increase",
-          inserted_at: "1730663650707",
-          result: null,
-          user_name: "Jonas",
+          price: 0.4321,
+          score: 1,
         },
       ]),
     )

@@ -10,6 +10,7 @@ const TABLE_NAME = "GuessesTable"
 type CreateGuessBody = {
   user_name: string
   guess: string
+  price: string
 }
 
 export const handler: Handler = async (
@@ -33,21 +34,15 @@ export const handler: Handler = async (
           user_name: requestBody.user_name,
           inserted_at: inserted_at,
           guess: requestBody.guess,
-          result: null,
+          price: requestBody.price,
+          score: null,
         },
       }),
     )
 
-    const response_body = {
-      user_name: requestBody.user_name,
-      inserted_at: inserted_at,
-      guess: requestBody.guess,
-      result: null,
-    }
-
     return {
-      statusCode: 200,
-      body: JSON.stringify(response_body),
+      statusCode: 201,
+      body: "Created",
     }
   }
 }

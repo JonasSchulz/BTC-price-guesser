@@ -10,7 +10,8 @@ import { Score } from "./components/score"
 
 const App = () => {
   const [username, setUsername] = useState("")
-  const [newGuess, setNewGuess] = useState<Guess>()
+  const [pageRefreshes, setPageRefreshes] = useState(0)
+  const [currentPrice, setCurrentPrice] = useState(0)
   const [pastGuesses, setPastGuesses] = useState<Array<Guess>>([])
 
   return (
@@ -21,12 +22,18 @@ const App = () => {
           <div className="flex justify-center pt-8 pb-8">
             <img className="size-60" src={logo} alt="Logo" />
           </div>
-          <CurrentBtcPrice />
-          <GuessForm username={username} setNewGuess={setNewGuess} pastGuesses={pastGuesses} />
+          <CurrentBtcPrice setCurrentPrice={setCurrentPrice} />
+          <GuessForm
+            username={username}
+            currentPrice={currentPrice}
+            pageRefreshes={pageRefreshes}
+            setPageRefreshes={setPageRefreshes}
+            pastGuesses={pastGuesses}
+          />
           <Score pastGuesses={pastGuesses} />
           <GuessList
             username={username}
-            newGuess={newGuess}
+            pageRefreshes={pageRefreshes}
             pastGuesses={pastGuesses}
             setPastGuesses={setPastGuesses}
           />

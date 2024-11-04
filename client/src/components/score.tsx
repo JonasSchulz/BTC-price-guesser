@@ -12,8 +12,8 @@ export const Score = (props: ScoreProps) => {
 
   useEffect(() => {
     const currentScore = pastGuesses
-      .filter((pastGuess) => pastGuess.result !== null)
-      .reduce((acc, pastGuess) => acc + pastGuess.result!, 0)
+      .filter((pastGuess) => pastGuess.score !== null)
+      .reduce((acc, pastGuess) => acc + pastGuess.score!, 0)
 
     setScore(currentScore)
   }, [pastGuesses])

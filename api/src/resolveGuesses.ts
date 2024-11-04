@@ -13,7 +13,7 @@ export const handler: Handler = async (
   // scan DB for any pending guesses older than 1 minute
   const input: ScanCommandInput = {
     TableName: "GuessesTable",
-    FilterExpression: "attribute_not_exists(result) or resul = :null",
+    FilterExpression: "attribute_not_exists(score) or score = :null",
     ExpressionAttributeValues: marshall({
       ":null": null,
     }),

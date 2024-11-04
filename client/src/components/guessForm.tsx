@@ -4,32 +4,34 @@ import { Guess, GuessTypes } from "../model/guess"
 
 type GuessFormProps = {
   username: string
-  setNewGuess: (guess: Guess) => void
+  currentPrice: number
+  pageRefreshes: number
+  setPageRefreshes: (refreshGueses: number) => void
   pastGuesses: Array<Guess>
 }
 
 export const GuessForm = (props: GuessFormProps) => {
-  const { username, setNewGuess, pastGuesses } = props
+  const { username, currentPrice, pageRefreshes, setPageRefreshes, pastGuesses } = props
 
   const [hasPendingGuess, setHasPendingGuess] = useState(true)
 
   useEffect(() => {
     console.log(pastGuesses)
-    console.log(pastGuesses.some((pastGuess) => pastGuess.result === null))
-    setHasPendingGuess(pastGuesses.some((pastGuess) => pastGuess.result === null))
+    console.log(pastGuesses.some((pastGuess) => pastGuess.score === null))
+    setHasPendingGuess(pastGuesses.some((pastGuess) => pastGuess.score === null))
   }, [pastGuesses])
 
   const makeGuess = async (guess: GuessTypes) => {
-    const response = await fetch(`${API_URL}/guesses`, {
+    await fetch(`${API_URL}/guesses`, {
       method: "POST",
       body: JSON.stringify({
         user_name: username,
         guess: guess,
+        price: currentPrice,
       }),
     })
 
-    const newGuess = (await response.json()) as Guess
-    setNewGuess(newGuess)
+    setPageRefreshes(pageRefreshes + 1)
   }
 
   return (
@@ -52,7 +54,11 @@ export const GuessForm = (props: GuessFormProps) => {
             </button>
           </div>
         </div>
-      ) : <p className="text-xl text-center">You have a pending guess. It needs to be resolved before you can guess again.</p>}
+      ) : (
+        <p className="text-xl text-center">
+          You have a pending guess. It needs to be resolved before you can guess again.
+        </p>
+      )}
     </>
   )
 }

@@ -33,6 +33,7 @@ describe("createGuess handler", () => {
       body: JSON.stringify({
         user_name: "some-username",
         guess: "some-guess",
+        price: 0.1234,
       }),
     } as APIGatewayProxyEventV2
     const testContext = {} as Context
@@ -40,6 +41,8 @@ describe("createGuess handler", () => {
 
     const response = await handler(testEvent, testContext, testCallback)
 
-    assert.strictEqual(response.statusCode, 200)
+    assert.strictEqual(dynamoMock.commandCalls(PutCommand).length, 1)
+    assert.strictEqual(response.statusCode, 201)
+    assert.strictEqual(response.body, "Created")
   })
 })

@@ -39,8 +39,8 @@ test("shows the current bitcoin price when the user identified themselves", asyn
 })
 
 test("allows the user to guess if the price is going to go up", async () => {
-  const fetchCreateGuessMock = JSON.stringify({ timeStamp: Date.now(), guess: GuessTypes.increase, result: null })
-  const fetchPastGuessesMock = JSON.stringify([{ timeStamp: Date.now(), guess: GuessTypes.increase, result: null }])
+  const fetchCreateGuessMock = "Created"
+  const fetchPastGuessesMock = JSON.stringify([{ timeStamp: Date.now(), guess: GuessTypes.increase, score: null }])
 
   fetchMock.mockResponses(
     fetchCurrentBtcPriceMock,
@@ -58,7 +58,7 @@ test("allows the user to guess if the price is going to go up", async () => {
   const increaseButton = await screen.findByText(/^increase$/i)
   await user.click(increaseButton)
 
-  const newGuess = await screen.findByText(/You guessed: increase - waiting for result/i)
+  const newGuess = await screen.findByText(/You guessed: increase - waiting for score/i)
   expect(newGuess).toBeInTheDocument()
 
   expect(fetchMock.mock.calls.length).toEqual(4)
@@ -66,15 +66,15 @@ test("allows the user to guess if the price is going to go up", async () => {
   expect(fetchMock.mock.calls[1][0]).toEqual(`${API_URL}/guesses?user_name=some-username`)
   expect(fetchMock.mock.calls[2][0]).toEqual(`${API_URL}/guesses`)
   expect(fetchMock.mock.calls[2][1]).toEqual({
-    body: '{"user_name":"some-username","guess":"increase"}',
+    body: '{"user_name":"some-username","guess":"increase","price":0.1234}',
     method: "POST",
   })
   expect(fetchMock.mock.calls[3][0]).toEqual(`${API_URL}/guesses?user_name=some-username`)
 })
 
 test("allows the user to guess if the price is going to go down", async () => {
-  const fetchCreateGuessMock = JSON.stringify({ timeStamp: Date.now(), guess: GuessTypes.decrease, result: null })
-  const fetchPastGuessesMock = JSON.stringify([{ timeStamp: Date.now(), guess: GuessTypes.decrease, result: null }])
+  const fetchCreateGuessMock = "Created"
+  const fetchPastGuessesMock = JSON.stringify([{ timeStamp: Date.now(), guess: GuessTypes.decrease, score: null }])
 
   fetchMock.mockResponses(
     fetchCurrentBtcPriceMock,
@@ -92,7 +92,7 @@ test("allows the user to guess if the price is going to go down", async () => {
   const decreaseButton = await screen.findByText(/^decrease$/i)
   await user.click(decreaseButton)
 
-  const newGuess = await screen.findByText(/You guessed: decrease - waiting for result/i)
+  const newGuess = await screen.findByText(/You guessed: decrease - waiting for score/i)
   expect(newGuess).toBeInTheDocument()
 
   expect(fetchMock.mock.calls.length).toEqual(4)
@@ -100,7 +100,7 @@ test("allows the user to guess if the price is going to go down", async () => {
   expect(fetchMock.mock.calls[1][0]).toEqual(`${API_URL}/guesses?user_name=some-username`)
   expect(fetchMock.mock.calls[2][0]).toEqual(`${API_URL}/guesses`)
   expect(fetchMock.mock.calls[2][1]).toEqual({
-    body: '{"user_name":"some-username","guess":"decrease"}',
+    body: '{"user_name":"some-username","guess":"decrease","price":0.1234}',
     method: "POST",
   })
   expect(fetchMock.mock.calls[3][0]).toEqual(`${API_URL}/guesses?user_name=some-username`)
@@ -112,13 +112,13 @@ test("shows the users past guesses", async () => {
       user_name: "some-username",
       inserted_at: Date.now().toString(),
       guess: GuessTypes.increase,
-      result: -1,
+      score: -1,
     },
     {
       user_name: "some-username",
       inserted_at: Date.now().toString(),
       guess: GuessTypes.decrease,
-      result: 1,
+      score: 1,
     },
   ])
   fetchMock.mockResponses(fetchCurrentBtcPriceMock, pastGuessesMock)
@@ -129,10 +129,10 @@ test("shows the users past guesses", async () => {
 
   await login(user)
 
-  const decreaseGuess = await screen.findByText(/You guessed: decrease - result: \+1/i)
+  const decreaseGuess = await screen.findByText(/You guessed: decrease - score: \+1/i)
   expect(decreaseGuess).toBeInTheDocument()
 
-  const increaseGuess = await screen.findByText(/You guessed: increase - result: -1/i)
+  const increaseGuess = await screen.findByText(/You guessed: increase - score: -1/i)
   expect(increaseGuess).toBeInTheDocument()
 
   expect(fetchMock.mock.calls.length).toEqual(2)
@@ -146,25 +146,25 @@ test("shows the user their current score", async () => {
       user_name: "some-username",
       inserted_at: Date.now().toString(),
       guess: GuessTypes.increase,
-      result: -1,
+      score: -1,
     },
     {
       user_name: "some-username",
       inserted_at: Date.now().toString(),
       guess: GuessTypes.decrease,
-      result: 1,
+      score: 1,
     },
     {
       user_name: "some-username",
       inserted_at: Date.now().toString(),
       guess: GuessTypes.decrease,
-      result: 1,
+      score: 1,
     },
     {
       user_name: "some-username",
       inserted_at: Date.now().toString(),
       guess: GuessTypes.decrease,
-      result: 1,
+      score: 1,
     },
   ])
   fetchMock.mockResponses(fetchCurrentBtcPriceMock, pastGuessesMock)
@@ -184,7 +184,7 @@ test("does not allow the user to guess if they have a pending result", async () 
       user_name: "some-username",
       inserted_at: Date.now().toString(),
       guess: GuessTypes.increase,
-      result: null,
+      score: null,
     },
   ])
   fetchMock.mockResponses(fetchCurrentBtcPriceMock, pastGuessesMock)

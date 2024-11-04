@@ -3,7 +3,7 @@ export enum GuessTypes {
   decrease = "decrease",
 }
 
-export enum ResultScores {
+export enum Scores {
   correct = 1,
   incorrect = -1,
 }
@@ -11,5 +11,5 @@ export enum ResultScores {
 export type Guess = {
   timeStamp: string
   guess: GuessTypes
-  result: null | ResultScores
+  score: null | Scores
 }
