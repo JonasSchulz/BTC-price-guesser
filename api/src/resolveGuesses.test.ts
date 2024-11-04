@@ -99,7 +99,7 @@ describe("resolveGuesses handler", () => {
       ],
     })
 
-    const url = "https://some.url"
+    const url = "https://some-sandbox.url"
     const api_key = "some-api-key"
 
     process.env.CMC_URL = url

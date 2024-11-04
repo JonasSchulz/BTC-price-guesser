@@ -1,6 +1,18 @@
-export type BtcMarketData = {
+export type SandboxBtcMarketData = {
   data: {
     bitcoin: {
+      quote: {
+        USD: {
+          price: number
+        }
+      }
+    }
+  }
+}
+
+export type BtcMarketData = {
+  data: {
+    "1": {
       quote: {
         USD: {
           price: number

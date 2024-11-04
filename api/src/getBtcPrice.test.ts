@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe("getBtcPrice handler", () => {
   it("retrieves the current BTC price when invoked", async (_t) => {
-    const url = "https://some.url"
+    const url = "https://some-sandbox.url"
     const api_key = "some-api-key"
 
     process.env.CMC_URL = url

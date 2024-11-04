@@ -1,4 +1,4 @@
-import { BtcMarketData } from "./model"
+import { BtcMarketData, SandboxBtcMarketData } from "./model"
 
 export const getBtcPrice = async () => {
   const base_path = process.env.CMC_URL || "https://sandbox-api.coinmarketcap.com"
@@ -11,7 +11,13 @@ export const getBtcPrice = async () => {
     },
   })
 
-  const json = (await response.json()) as BtcMarketData
+  if (base_path.includes("sandbox")) {
+    const json = (await response.json()) as SandboxBtcMarketData
 
-  return json.data.bitcoin.quote.USD.price
+    return json.data.bitcoin.quote.USD.price
+  } else {
+    const json = (await response.json()) as BtcMarketData
+
+    return json.data["1"].quote.USD.price
+  }
 }
