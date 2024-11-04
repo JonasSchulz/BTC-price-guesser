@@ -54,7 +54,8 @@ export const GuessForm = (props: GuessFormProps) => {
         </div>
       ) : (
         <p className="text-xl text-center">
-          You have a pending guess. It needs to be resolved before you can guess again.
+          You have a pending guess. It needs to be resolved before you can guess again.<br/>
+          Please wait 1 minute then refresh the page.
         </p>
       )}
     </>
