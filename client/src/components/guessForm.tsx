@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { API_URL } from "../constants"
-import { Guess, GuessTypes } from "../model/guess"
+import { Guess, GuessTypes, Scores } from "../model/guess"
 
 type GuessFormProps = {
   username: string
@@ -16,9 +16,7 @@ export const GuessForm = (props: GuessFormProps) => {
   const [hasPendingGuess, setHasPendingGuess] = useState(true)
 
   useEffect(() => {
-    console.log(pastGuesses)
-    console.log(pastGuesses.some((pastGuess) => pastGuess.score === null))
-    setHasPendingGuess(pastGuesses.some((pastGuess) => pastGuess.score === null))
+    setHasPendingGuess(pastGuesses.some((pastGuess) => pastGuess.score === Scores.unresolved))
   }, [pastGuesses])
 
   const makeGuess = async (guess: GuessTypes) => {

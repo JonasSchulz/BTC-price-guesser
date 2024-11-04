@@ -9,15 +9,16 @@ type GuessListProps = {
   setPastGuesses: (pastGuesses: Array<Guess>) => void
 }
 
-const buildResultString = (score: Scores | null) => {
-  if (score === null) return "waiting for score"
-
+const buildScoreString = (score: Scores) => {
   switch (score) {
     case Scores.correct: {
       return "score: +1"
     }
     case Scores.incorrect: {
       return "score: -1"
+    }
+    case Scores.unresolved: {
+      return "waiting for score"
     }
   }
 }
@@ -45,11 +46,9 @@ export const GuessList = (props: GuessListProps) => {
       <p className="text-center underline font-bold mb-2">Your guesses</p>
       <ul className="flex flex-col">
         {pastGuesses.map((pastGuess) => {
-          const result = buildResultString(pastGuess.score)
+          const score = buildScoreString(pastGuess.score)
 
-          return (
-            <li className="space-y-1 list-disc list-inside p-1">{`You guessed: ${pastGuess.guess} - ${result}`}</li>
-          )
+          return <li className="space-y-1 list-disc list-inside p-1">{`You guessed: ${pastGuess.guess} - ${score}`}</li>
         })}
       </ul>
     </div>

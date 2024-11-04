@@ -45,6 +45,13 @@ describe("getGuesses handler", () => {
           price: 0.4321,
           score: 1,
         },
+        {
+          user_name: "some-user",
+          inserted_at: "1730662301474",
+          guess: "increase",
+          price: 0.4321,
+          score: 0,
+        },
       ],
     })
 
@@ -76,6 +83,13 @@ describe("getGuesses handler", () => {
           guess: "increase",
           price: 0.4321,
           score: 1,
+        },
+        {
+          user_name: "some-user",
+          inserted_at: "1730662301474",
+          guess: "increase",
+          price: 0.4321,
+          score: 0,
         },
       ]),
     )

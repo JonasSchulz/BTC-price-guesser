@@ -40,7 +40,7 @@ test("shows the current bitcoin price when the user identified themselves", asyn
 
 test("allows the user to guess if the price is going to go up", async () => {
   const fetchCreateGuessMock = "Created"
-  const fetchPastGuessesMock = JSON.stringify([{ timeStamp: Date.now(), guess: GuessTypes.increase, score: null }])
+  const fetchPastGuessesMock = JSON.stringify([{ timeStamp: Date.now(), guess: GuessTypes.increase, score: 0 }])
 
   fetchMock.mockResponses(
     fetchCurrentBtcPriceMock,
@@ -74,7 +74,7 @@ test("allows the user to guess if the price is going to go up", async () => {
 
 test("allows the user to guess if the price is going to go down", async () => {
   const fetchCreateGuessMock = "Created"
-  const fetchPastGuessesMock = JSON.stringify([{ timeStamp: Date.now(), guess: GuessTypes.decrease, score: null }])
+  const fetchPastGuessesMock = JSON.stringify([{ timeStamp: Date.now(), guess: GuessTypes.decrease, score: 0 }])
 
   fetchMock.mockResponses(
     fetchCurrentBtcPriceMock,
@@ -184,7 +184,7 @@ test("does not allow the user to guess if they have a pending result", async () 
       user_name: "some-username",
       inserted_at: Date.now().toString(),
       guess: GuessTypes.increase,
-      score: null,
+      score: 0,
     },
   ])
   fetchMock.mockResponses(fetchCurrentBtcPriceMock, pastGuessesMock)

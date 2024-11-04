@@ -35,7 +35,7 @@ export const handler: Handler = async (
           inserted_at: inserted_at,
           guess: requestBody.guess,
           price: requestBody.price,
-          score: null,
+          score: 0,
         },
       }),
     )

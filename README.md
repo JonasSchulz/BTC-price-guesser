@@ -1,5 +1,8 @@
 # BTC-price-guesser
 
+quick description of the overall project
+
+specific instructions for each app can be found in their own readmes
 
 # Future improvements
 
