@@ -39,4 +39,5 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          CMC_API_KEY: ${{ secrets.CNC_API_KEY }}
+          CMC_URL: ${{ secrets.CMC_URL }}
+          CMC_API_KEY: ${{ secrets.CMC_API_KEY }}
