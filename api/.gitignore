@@ -3,3 +3,6 @@
 
 # Serverless directories
 .serverless
+
+# Build directories
+/.esbuild/
