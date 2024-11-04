@@ -9,7 +9,7 @@ export const handler: Handler = async (
 
   const priceData = {
     currentPrice: price,
-    currency: "EUR",
+    currency: "USD",
   }
 
   return {

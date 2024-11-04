@@ -23,8 +23,8 @@ describe("getBtcPrice handler", () => {
     process.env.CMC_API_KEY = api_key
 
     fetchMock.mockGlobal().get(
-      `${url}/v1/cryptocurrency/quotes/latest?slug=bitcoin&convert=EUR`,
-      { data: { bitcoin: { quote: { EUR: { price: 0.1234 } } } } },
+      `${url}/v1/cryptocurrency/quotes/latest?slug=bitcoin&convert=USD`,
+      { data: { bitcoin: { quote: { USD: { price: 0.1234 } } } } },
       {
         headers: {
           "X-CMC_PRO_API_KEY": api_key,
@@ -41,7 +41,7 @@ describe("getBtcPrice handler", () => {
     const responseBody = JSON.parse(response.body)
 
     assert.strictEqual(response.statusCode, 200)
-    assert.strictEqual(responseBody.currency, "EUR")
+    assert.strictEqual(responseBody.currency, "USD")
     assert.strictEqual(responseBody.currentPrice, 0.1234)
   })
 })

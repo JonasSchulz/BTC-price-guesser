@@ -8,7 +8,7 @@ beforeEach(() => {
   fetchMock.resetMocks()
 })
 
-const fetchCurrentBtcPriceMock = JSON.stringify({ currentPrice: 0.1234, currency: "EUR" })
+const fetchCurrentBtcPriceMock = JSON.stringify({ currentPrice: 0.1234, currency: "USD" })
 const fetchEmptyPastGuessesMock = JSON.stringify([])
 
 const login = async (user: UserEvent) => {
@@ -34,7 +34,7 @@ test("shows the current bitcoin price when the user identified themselves", asyn
   const bitcoinHeading = await screen.findByText(/The current price for a Bitcoin is:/i)
   expect(bitcoinHeading).toBeInTheDocument()
 
-  const bitcoinPrice = await screen.findByText(/0.1234 EUR/i)
+  const bitcoinPrice = await screen.findByText(/0.1234 USD/i)
   expect(bitcoinPrice).toBeInTheDocument()
 })
 

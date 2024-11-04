@@ -106,8 +106,8 @@ describe("resolveGuesses handler", () => {
     process.env.CMC_API_KEY = api_key
 
     fetchMock.mockGlobal().get(
-      `${url}/v1/cryptocurrency/quotes/latest?slug=bitcoin&convert=EUR`,
-      { data: { bitcoin: { quote: { EUR: { price: 0.2345 } } } } },
+      `${url}/v1/cryptocurrency/quotes/latest?slug=bitcoin&convert=USD`,
+      { data: { bitcoin: { quote: { USD: { price: 0.2345 } } } } },
       {
         headers: {
           "X-CMC_PRO_API_KEY": api_key,

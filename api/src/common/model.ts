@@ -2,7 +2,7 @@ export type BtcMarketData = {
   data: {
     bitcoin: {
       quote: {
-        EUR: {
+        USD: {
           price: number
         }
       }
