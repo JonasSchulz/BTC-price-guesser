@@ -58,6 +58,10 @@ functions:
           path: /guesses
           method: GET
 
+  ResolveGuesses:
+    handler: ./src/ResolveGuesses.handler
+    events:
+      - schedule: rate(1 minutes)
 
 resources:
   Resources:
