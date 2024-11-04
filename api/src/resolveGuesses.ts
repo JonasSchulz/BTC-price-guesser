@@ -13,16 +13,16 @@ export const handler: Handler = async (): Promise<void> => {
   // we need to filter out guesses that are not old enough to be resolved
   const oneMinuteAgo = Date.now() - 1 * 60 * 1000
   const guessOlderThanOneMinute = guessesToResolve.filter((guess) => Number(guess.inserted_at) < oneMinuteAgo)
-  
+
   if (guessOlderThanOneMinute.length === 0) return
 
   const currentPrice = await getBtcPrice()
 
-  guessOlderThanOneMinute.forEach((guessToResolve) => {
-    const score = calculateScore(guessToResolve.guess, guessToResolve.price, currentPrice)
+  for (const guessToResolve of guessOlderThanOneMinute) {
+    const score = calculateScore(guessToResolve.guess, guessToResolve.price, currentPrice);
 
-    updateScore(guessToResolve, score, currentPrice)
-  })
+    await updateScore(guessToResolve, score, currentPrice);
+  }
 
   return
 }
@@ -38,7 +38,7 @@ const calculateScore = (guess: GuessTypes, initialPrice: number, currentPrice: n
   }
 }
 
-const updateScore = (guess: Guess, score: number, currentPrice: number) => {
+const updateScore = async (guess: Guess, score: number, currentPrice: number) => {
   const command = new UpdateCommand({
     TableName: "GuessesTable",
     Key: {
@@ -52,7 +52,7 @@ const updateScore = (guess: Guess, score: number, currentPrice: number) => {
     },
   })
 
-  dbClient.send(command)
+  await dbClient.send(command)
 }
 
 const getGuessesToResolve = async () => {
