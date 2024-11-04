@@ -59,7 +59,7 @@ functions:
           method: GET
 
   ResolveGuesses:
-    handler: ./src/ResolveGuesses.handler
+    handler: ./src/resolveGuesses.handler
     events:
       - schedule: rate(1 hour)
 
