@@ -12,14 +12,13 @@ type BtcMarketData = {
   }
 }
 
-//TODO: get these from env vars
-const base_path = "https://sandbox-api.coinmarketcap.com"
-const api_key = "b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c"
-
 export const handler: Handler = async (
   _event: APIGatewayProxyEventV2,
   _context: Context,
 ): Promise<APIGatewayProxyStructuredResultV2> => {
+  const base_path = process.env.CMC_URL || "https://sandbox-api.coinmarketcap.com"
+  const api_key = process.env.CMC_API_KEY || "b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c"
+
   const response = await fetch(`${base_path}/v1/cryptocurrency/quotes/latest?slug=bitcoin&convert=EUR`, {
     method: "GET",
     headers: {
