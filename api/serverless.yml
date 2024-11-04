@@ -61,7 +61,7 @@ functions:
   ResolveGuesses:
     handler: ./src/resolveGuesses.handler
     events:
-      - schedule: rate(1 hour)
+      - schedule: rate(1 minute)
 
 resources:
   Resources:
