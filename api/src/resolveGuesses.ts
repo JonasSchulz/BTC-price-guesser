@@ -45,7 +45,7 @@ const updateScore = (guess: Guess, score: number, currentPrice: number) => {
       user_name: guess.user_name,
       inserted_at: guess.inserted_at,
     },
-    UpdateExpression: "set score = :score, resolved_price: :resolved_price",
+    UpdateExpression: "set score = :score, resolved_price = :resolved_price",
     ExpressionAttributeValues: {
       ":score": score,
       ":resolved_price": currentPrice,
