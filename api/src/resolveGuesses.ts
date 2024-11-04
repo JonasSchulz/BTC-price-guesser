@@ -1,34 +1,71 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb"
-import { DynamoDBDocumentClient, ScanCommand, ScanCommandInput } from "@aws-sdk/lib-dynamodb"
-import { marshall } from "@aws-sdk/util-dynamodb"
-import type { Context, APIGatewayProxyStructuredResultV2, APIGatewayProxyEventV2, Handler } from "aws-lambda"
+import { DynamoDBDocumentClient, ScanCommand, ScanCommandInput, UpdateCommand } from "@aws-sdk/lib-dynamodb"
+import type { Handler } from "aws-lambda"
+import { BtcMarketData, Guess, GuessTypes } from "./common/model"
+import { getBtcPrice } from "./common/btcPriceFetcher"
 
 const client = new DynamoDBClient({})
 const dbClient = DynamoDBDocumentClient.from(client)
 
-export const handler: Handler = async (
-  _event: APIGatewayProxyEventV2,
-  _context: Context,
-): Promise<APIGatewayProxyStructuredResultV2> => {
-  // scan DB for any pending guesses older than 1 minute
+export const handler: Handler = async (): Promise<void> => {
+  const guessesToResolve = await getGuessesToResolve()
+
+  // we need to filter out guesses that are not old enough to be resolved
+  const oneMinuteAgo = Date.now() - 1 * 60 * 1000
+  const guessOlderThanOneMinute = guessesToResolve.filter((guess) => Number(guess.inserted_at) < oneMinuteAgo)
+  
+  if (guessOlderThanOneMinute.length === 0) return
+
+  const currentPrice = await getBtcPrice()
+
+  guessOlderThanOneMinute.forEach((guessToResolve) => {
+    const score = calculateScore(guessToResolve.guess, guessToResolve.price, currentPrice)
+
+    updateScore(guessToResolve, score, currentPrice)
+  })
+
+  return
+}
+
+const calculateScore = (guess: GuessTypes, initialPrice: number, currentPrice: number) => {
+  switch (guess) {
+    case GuessTypes.increase: {
+      return initialPrice < currentPrice ? 1 : -1
+    }
+    case GuessTypes.decrease: {
+      return initialPrice > currentPrice ? 1 : -1
+    }
+  }
+}
+
+const updateScore = (guess: Guess, score: number, currentPrice: number) => {
+  const command = new UpdateCommand({
+    TableName: "GuessesTable",
+    Key: {
+      user_name: guess.user_name,
+      inserted_at: guess.inserted_at,
+    },
+    UpdateExpression: "set score = :score, resolved_price: :resolved_price",
+    ExpressionAttributeValues: {
+      ":score": score,
+      ":resolved_price": currentPrice,
+    },
+  })
+
+  dbClient.send(command)
+}
+
+const getGuessesToResolve = async () => {
+  // if the score is 0 the guess is unresolved
   const input: ScanCommandInput = {
     TableName: "GuessesTable",
-    FilterExpression: "attribute_not_exists(score) or score = :null",
-    ExpressionAttributeValues: marshall({
-      ":null": null,
-    }),
+    FilterExpression: "score = :score",
+    ExpressionAttributeValues: {
+      ":score": 0,
+    },
   }
-
   const command = new ScanCommand(input)
-  const response = await dbClient.send(command)
+  const dbResponse = await dbClient.send(command)
 
-  console.log(response)
-  // if there are pending guesses, get the current BTC price
-
-  // score any pending guesses
-
-  return {
-    statusCode: 200,
-    body: "",
-  }
+  return dbResponse.Items as Guess[]
 }
