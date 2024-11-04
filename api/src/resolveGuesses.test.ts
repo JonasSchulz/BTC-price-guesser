@@ -50,10 +50,18 @@ describe("resolveGuesses handler", () => {
       Items: [
         // This guess will not be resolved, it is not old enough
         {
-          user_name: "some-user-1",
+          user_name: "some-user-0",
           inserted_at: now.toString(),
           guess: "decrease",
           price: 0.1234,
+          score: 0,
+        },
+        // this guess not be resolved, the price didn't change
+        {
+          user_name: "some-user-1",
+          inserted_at: twoMinutesAgo.toString(),
+          guess: "decrease",
+          price: 0.2345,
           score: 0,
         },
         // this guess will score -1

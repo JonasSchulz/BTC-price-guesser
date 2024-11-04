@@ -19,9 +19,11 @@ export const handler: Handler = async (): Promise<void> => {
   const currentPrice = await getBtcPrice()
 
   for (const guessToResolve of guessOlderThanOneMinute) {
-    const score = calculateScore(guessToResolve.guess, guessToResolve.price, currentPrice);
+    if (guessToResolve.price === currentPrice) continue
 
-    await updateScore(guessToResolve, score, currentPrice);
+    const score = calculateScore(guessToResolve.guess, guessToResolve.price, currentPrice)
+
+    await updateScore(guessToResolve, score, currentPrice)
   }
 
   return
